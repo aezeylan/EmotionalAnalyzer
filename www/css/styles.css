@@ -94,6 +94,24 @@ form#textForm input#button_send{
     border-bottom-width: 0 !important;
 }
 
+.content ul{
+    overflow:hidden; 
+    overflow-y:scroll;
+    width: 100%;
+}
+
+.content ul li span.text-holder{
+    width: 65%;
+    float: left;
+}
+
+.content ul li span.date-holder{
+    width: 35%;
+    float: left;
+    color: #222;
+    font-weight: lighter;
+}
+
 .indicator {
     background-color: red;
     padding: 0;
