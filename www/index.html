@@ -37,110 +37,76 @@
         <title>Emotional Analyzer</title>
     </head>
     <body>
+    	<div id="settings" class="panel"> 
+    		<div class="settings-header">
+		    	<h2>Panel Header..</h2>
+		    </div>
+		    <p>Some text in the panel..</p>
+	        <a href="#" id="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
+			<form>
+			    <div class="ui-field-contain">
+			        <label for="flip-6">Flip toggle switch:</label>
+			        <select name="flip-6" id="flip-6" data-role="slider">
+			            <option value="off">Off</option>
+			            <option value="on">On</option>
+			        </select>
+			    </div>
+			</form>
+		</div> 
+
     	<!-- PAGE 1 -->
-    	<div data-role="page" data-theme="b" id="pageone">
-	        <div class="app">
-	            <!-- <h1 class="title">Emotion Analyzer</h1> -->
-	        </div>
-	        <div class="ui-body-b ui-body ui-header-b ui-bar-inherit-b" data-role="header">
-	            <h1>Messages</h1>
-	                <a href="#" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear">Settings</a>
-	        </div>
-	        <div class="col-sm-12 col-xs-12 wrapper" data-role="main">
-	            <form id="textForm"> 
-	                <textarea name="input_msg" id="input_msg"></textarea>
+	    <div data-role="page" id="home">
+	    	<!--  <div data-role="panel" id="settings" data-display="overlay"> 
+			    <h2>Panel Header..</h2>
+			    <p>Some text in the panel..</p>
+			        <a href="#home" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
+			 </div>  -->
+		    <div id="header" data-role="header" data-position="fixed" data-tap-toggle="false"> 
+		         <h1>Messages</h1>
+		          <a href="#" id="open-settings" class="ui-btn ui-btn-right ui-btn-inline ui-corner-all ui-shadow">Open Panel</a>
+		    </div>
+		    <div role="main" class="ui-content wrapper">
+		        <form id="textForm" method="post"> 
+	                <textarea name="text" id="text"></textarea>
 	                <input class="ui-btn ui-btn-b" type="submit" id="button_send" value="Anaylyse."></input>
 	            </form>
-	        </div>
-	        <div class="row indicator"><ul>
-	        <li class="col-sm-4 col-xs-4 indicator-active"></li>
-	        <li class="col-sm-4 col-xs-4"></li>
-	        <li class="col-sm-4 col-xs-4"></li>
-	        </div>
-	    </div>
+		    </div>
+		      <div id="footer" data-role="footer" data-position="fixed" data-tap-toggle="false"> 
+		         <h1>Emotional Analyzer</h1>
+		    </div>
+		</div>
 
 	    <!-- PAGE 2 -->
-
-        <div data-role="page" data-theme="b" id="pagetwo">
-            <div class="app">
-                <!-- <h1 class="title">Emotion Analyzer</h1> -->
-            </div>
-            <div class="ui-body-b ui-body ui-header-b ui-bar-inherit-b" data-role="header">
-                <h1>History</h1>
-                    <a href="#" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear">Settings</a>
-            </div>
-            <div class="col-sm-12 col-xs-12 wrapper" data-role="main">
-                <div class="content">
-                	    <ul data-role="listview" data-inset="true">
-					      <li><span class="text-holder">Dit is tekst 1. Ik...</span><span class="date-holder">12-03-2016</span>
-					      	<ul>
-								<li>Dit is tekst 1 - 30% boos</li>
-								<li>Ik ben boos. - 100% boos</li>
-								<li>Dit is een feit. - 50% vrolijk</li>
-							</ul>
-					      </li>
-					      <li><span class="text-holder">Dit is tekst 2. Ik...</span><span class="date-holder">12-03-2016</span>
-					      	<ul>
-								<li>Dit is tekst 3 - 30% boos</li>
-								<li>Ik ben boos. - 100% boos</li>
-								<li>Dit is een feit. - 50% vrolijk</li>
-							</ul>
-					      </li>
-					      <li><span class="text-holder">Dit is tekst 3. Ik...</span><span class="date-holder">12-03-2016</span>
-					      	<ul>
-								<li>Dit is tekst 3 - 30% boos</li>
-								<li>Ik ben boos. - 100% boos</li>
-								<li>Dit is een feit. - 50% vrolijk</li>
-							</ul>
-					      </li>
-					      <li><span class="text-holder">Dit is tekst 4. Ik...</span><span class="date-holder">12-03-2016</span>
-					      	<ul>
-								<li>Dit is tekst 4 - 30% boos</li>
-								<li>Ik ben boos. - 100% boos</li>
-								<li>Dit is een feit. - 50% vrolijk</li>
-							</ul>
-					      </li>
-					      <li><span class="text-holder">Dit is tekst 5. Ik...</span><span class="date-holder">12-03-2016</span>
-					      	<ul>
-								<li>Dit is tekst 5 - 30% boos</li>
-								<li>Ik ben boos. - 100% boos</li>
-								<li>Dit is een feit. - 50% vrolijk</li>
-							</ul>
-					      </li>
-					  </ul>
-                </div>
-            </div>
-            <div class="row indicator"><ul>
-            <li class="col-sm-4 col-xs-4"></li>
-            <li class="col-sm-4 col-xs-4 indicator-active"></li>
-            <li class="col-sm-4 col-xs-4"></li>
-            </div>
-        </div>
+        <div data-role="page" id="history">
+		    <div data-role="header" data-position="fixed" data-tap-toggle="false"> 
+		         <h1>History</h1>
+		         <a href="#" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear">Settings</a>
+		    </div>
+		    <div role="main" class="ui-content wrapper">
+		        <ul data-role="listview" id="list"></ul>
+		    </div>
+		</div>
 
         <!-- PAGE 3 -->
-
-        <div data-role="page" data-theme="b" id="pagethree">
-            <div class="app">
-                <!-- <h1 class="title">Emotion Analyzer</h1> -->
-            </div>
-            <div class="ui-body-b ui-body ui-header-b ui-bar-inherit-b" data-role="header">
-                <h1>Information</h1>
-                    <a href="#" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear">Settings</a>
-            </div>
-            <div class="col-sm-12 col-xs-12 wrapper" data-role="main">
-               <div class="content">
+        <div data-role="page" id="info">
+		    <div data-role="header" data-position="fixed" data-tap-toggle="false"> 
+		         <h1>Information</h1>
+		         <a href="#" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear">Settings</a>
+		    </div>
+		    <div role="main" class="ui-content wrapper">
+		       <div class="content">
                		<p>Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh.</p>
                		<p>
-					Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut eros et nisl sagittis vestibulum.</p>
-
+					Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut eros et nisl sagittis vestibulum.
+					<a onclick='window.open("http://google.com","_system", "location=yes")' href='javascript:void(0)' >link</a></p>
                </div>
-            </div>
-            <div class="row indicator"><ul>
-            <li class="col-sm-4 col-xs-4"></li>
-            <li class="col-sm-4 col-xs-4"></li>
-            <li class="col-sm-4 col-xs-4 indicator-active"></li>
-            </div>
-        </div>
+		    </div>
+		</div>
+
+
+
+
+
 
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
@@ -148,6 +114,9 @@
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
+        <script type="text/javascript" src="js/ajax.js"></script>
+        <script type="text/javascript" src="js/db.js"></script>
+        <script type="text/javascript" src="js/Chart.min.js"></script>
         <script type="text/javascript">
             app.initialize();
         </script>

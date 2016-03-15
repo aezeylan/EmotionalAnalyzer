@@ -48,7 +48,7 @@ form#textForm{
     margin: 0;
 }
 
-form#textForm textarea#input_msg{
+form#textForm textarea#text{
     width: 100%;
     height: 90% !important;
     font-size: 16px;
@@ -137,3 +137,50 @@ form#textForm input#button_send{
 .indicator ul li.indicator-active {
     background-color: rgb(72,214,253);
 }
+
+#settings{
+    position:fixed;
+    top:-100%;
+    left:0%;
+    height:100%; 
+    background-color: #DBDBDB;
+    width: 100%;
+    display: block;
+    z-index:999999;
+    text-align: center;
+}
+
+.settings-header, .resultAnalyse-header{
+    background-color: #333;
+    top: 0px;
+    position: relative;
+    width: 100%;
+    color: #fff;
+}
+
+#resultAnalyse{
+    position:fixed;
+    top:-100%;
+    left:0%;
+    height:100%; 
+    background-color: #DBDBDB;
+    width: 100%;
+    display: block;
+    z-index:999999;
+}
+
+.graph-holder{
+    height: 25%; 
+    width: 100%;
+}
+.list-holder{
+    height: 75%; 
+    width: 100%;
+}
+
+canvas#graph{
+    width: 25%;
+    height: 100%;
+}
+
+
