@@ -12,17 +12,6 @@ $(document).delegate('.ui-page', "swipeleft", function(){
     }
 });
 
-$(function() {
-    $('#open-settings').click(function(){
-            $('#settings').animate({'top':'0'},300);
-        });
-
-    $('#close').click(function(){
-        $('#settings').animate({'top':'-100%'},300)        
-    });
-
-});
-
 
 (function( $, window, undefined ) {
     $.widget( "mobile.listview", $.mobile.listview, {
@@ -135,3 +124,7 @@ function addMore(page) {
 
 /* attach if scrollstop for first time */
 $(document).on("scrollstop", checkScroll);
+
+
+
+

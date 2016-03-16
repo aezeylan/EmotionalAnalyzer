@@ -56,7 +56,7 @@ form#textForm textarea#text{
     margin: 0;
     border:0;
     border-radius: 0px;
-    background-color: #eee;
+    background-color: #FFF;
 }
 
 form#textForm input#button_send{
@@ -80,19 +80,6 @@ form#textForm input#button_send{
     padding: 1% 5%;
 }
 
-.ui-li-static.ui-collapsible > .ui-collapsible-heading {
-    margin: 0 !important;
-}
-.ui-li-static.ui-collapsible {
-    padding: 0 !important;
-}
-.ui-li-static.ui-collapsible > .ui-collapsible-heading > .ui-btn {
-    border-top-width: 0 !important;
-}
-.ui-li-static.ui-collapsible > .ui-collapsible-heading.ui-collapsible-heading-collapsed > .ui-btn,
-.ui-li-static.ui-collapsible > .ui-collapsible-content {
-    border-bottom-width: 0 !important;
-}
 
 .content ul{
     overflow:hidden; 
@@ -138,19 +125,7 @@ form#textForm input#button_send{
     background-color: rgb(72,214,253);
 }
 
-#settings{
-    position:fixed;
-    top:-100%;
-    left:0%;
-    height:100%; 
-    background-color: #DBDBDB;
-    width: 100%;
-    display: block;
-    z-index:999999;
-    text-align: center;
-}
-
-.settings-header, .resultAnalyse-header{
+.resultAnalyse-header{
     background-color: #333;
     top: 0px;
     position: relative;
@@ -177,6 +152,24 @@ form#textForm input#button_send{
     height: 75%; 
     width: 100%;
 }
+
+
+.list-holder ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list-holder ul li {
+  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+}
+
+l.list-holder ul li:last-child {
+  border: none;
+}
+
+
 
 canvas#graph{
     width: 25%;

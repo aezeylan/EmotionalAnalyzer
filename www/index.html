@@ -1,31 +1,12 @@
 <!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
 
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1 target-densitydpi=device-dpi" />
        
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
      	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -37,85 +18,54 @@
         <title>Emotional Analyzer</title>
     </head>
     <body>
-    	<div id="settings" class="panel"> 
-    		<div class="settings-header">
-		    	<h2>Panel Header..</h2>
-		    </div>
-		    <p>Some text in the panel..</p>
-	        <a href="#" id="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
-			<form>
-			    <div class="ui-field-contain">
-			        <label for="flip-6">Flip toggle switch:</label>
-			        <select name="flip-6" id="flip-6" data-role="slider">
-			            <option value="off">Off</option>
-			            <option value="on">On</option>
-			        </select>
-			    </div>
-			</form>
-		</div> 
-
-    	<!-- PAGE 1 -->
-	    <div data-role="page" id="home">
-	    	<!--  <div data-role="panel" id="settings" data-display="overlay"> 
-			    <h2>Panel Header..</h2>
-			    <p>Some text in the panel..</p>
-			        <a href="#home" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
-			 </div>  -->
-		    <div id="header" data-role="header" data-position="fixed" data-tap-toggle="false"> 
-		         <h1>Messages</h1>
-		          <a href="#" id="open-settings" class="ui-btn ui-btn-right ui-btn-inline ui-corner-all ui-shadow">Open Panel</a>
-		    </div>
-		    <div role="main" class="ui-content wrapper">
-		        <form id="textForm" method="post"> 
-	                <textarea name="text" id="text"></textarea>
-	                <input class="ui-btn ui-btn-b" type="submit" id="button_send" value="Anaylyse."></input>
-	            </form>
-		    </div>
-		      <div id="footer" data-role="footer" data-position="fixed" data-tap-toggle="false"> 
-		         <h1>Emotional Analyzer</h1>
-		    </div>
+		<div data-role="page" id="home">
+		   <div data-role="header">
+		      <h2>Emotional Analyzer - Home</h2>
+		   </div>
+		   <div role="main" class="ui-content wrapper">
+		     <form id="textForm" method="post"> 
+	                <textarea name="text" id="text" placeholder="Voer tekst in."></textarea>
+	                <input class="ui-btn ui-btn-b" type="submit" id="button_send" value="Analyse."></input>
+	          </form>
+		   </div>
+		   <div data-role="footer">
+		      <h4>Footer</h4>
+		   </div>
 		</div>
 
-	    <!-- PAGE 2 -->
-        <div data-role="page" id="history">
-		    <div data-role="header" data-position="fixed" data-tap-toggle="false"> 
-		         <h1>History</h1>
-		         <a href="#" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear">Settings</a>
-		    </div>
-		    <div role="main" class="ui-content wrapper">
-		        <ul data-role="listview" id="list"></ul>
-		    </div>
+		<div data-role="page" id="history">
+		   <div data-role="header">
+		      <h1>Header Text</h1>
+		   </div>
+		   <div role="main" class="ui-content">
+		      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the  industry's standard dummy text ever since the 1500s.</p>
+		      <p><a href="details.html">Back to previous page</a></p>
+		   </div>
+		   <div data-role="footer">
+		      <h4>Footer Text</h4>
+		   </div>
 		</div>
 
-        <!-- PAGE 3 -->
-        <div data-role="page" id="info">
-		    <div data-role="header" data-position="fixed" data-tap-toggle="false"> 
-		         <h1>Information</h1>
-		         <a href="#" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear">Settings</a>
-		    </div>
-		    <div role="main" class="ui-content wrapper">
-		       <div class="content">
-               		<p>Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh.</p>
-               		<p>
-					Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut eros et nisl sagittis vestibulum.
-					<a onclick='window.open("http://google.com","_system", "location=yes")' href='javascript:void(0)' >link</a></p>
-               </div>
-		    </div>
+		<div data-role="page" id="info">
+		   <div data-role="header">
+		      <h1>Header Text</h1>
+		   </div>
+		   <div role="main" class="ui-content">
+		      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the  industry's standard dummy text ever since the 1500s.</p>
+		      <p><a onclick='window.open("http://google.com","_system", "location=yes")' href='javascript:void(0)' >link</a></p>
+		   </div>
+		   <div data-role="footer">
+		      <h4>Footer Text</h4>
+		   </div>
 		</div>
 
-
-
-
-
-
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
-        <script type="text/javascript" src="js/ajax.js"></script>
-        <script type="text/javascript" src="js/db.js"></script>
+        <script type="text/javascript" src="js/ajax2.js"></script>
         <script type="text/javascript" src="js/Chart.min.js"></script>
         <script type="text/javascript">
             app.initialize();

@@ -1,30 +1,8 @@
 /* check scroll function */
-function postRedirect() {
+function messagePost() {
    $('#button_send').on('tap',function(event){
     event.preventDefault();
-    // var message = $('#text').val();
-    // $.ajax({
-    //     url: "details.html",
-    //     type: "post",
-    //     data: message,
-    //     success: function (response) {
-    //        // you will get response from your php page (what you echo or print)                 
-    //        console.log(response);
-    //        $('body').html(response);
-    //        // messagePost(message);
-
-    //     },
-    //     error: function(jqXHR, textStatus, errorThrown) {
-    //        console.log(textStatus, errorThrown);
-    //     }
-    // });
-
-  });
-}
-
-/* check scroll function */
-function messagePost(message) {
-
+    var message = $('#text').val();
     var data = '{"text": "'+message+'"}';
     // route url aangepast naar /analyzer/analyze
     $.ajax({
@@ -41,6 +19,7 @@ function messagePost(message) {
            console.log(textStatus, errorThrown);
         }
     });
+  });
 }
 
 function getResults(response) {
@@ -56,11 +35,19 @@ function getResults(response) {
          }
       }
       list += '</ul>';
+
+      $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graph"></canvas></div><div class="list-holder">'+list+'</div></div>').insertBefore('#home');
+      $('#resultAnalyse').animate({'top':'0'},300);  
       
       values = response.analysis.document_tone.tone_categories[0].tones;
       createChart(values);
 
       $('.list-holder').append(list);
+
+      $('#close_details').on('tap',function(){
+           // $('#resultAnalyse').animate({'top':'-100%'},300).remove();  
+           $('#text').val('');
+      });
 }
 
 function createChart(values) {
@@ -86,24 +73,6 @@ function createChart(values) {
 }
 
 $(document).on('ready', function(){
-    postRedirect();
-
+    messagePost();
 });
-
-// $(document).on("pagebeforecreate", "#details",function(){
-//     // messagePost();
-//     // $('#home, #info, #history').remove();
-//     alert('demo');
-// });
-
-// $(document).on("pagebeforecreate", "#home",function(){
-//     // messagePost();
-//     $('#details').remove();
-//     alert('wqd');
-//      // postRedirect();
-// });
-
-// $(document).on("pagecreate",function(){
-  
-// });
 
