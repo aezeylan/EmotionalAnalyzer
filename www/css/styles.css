@@ -151,29 +151,79 @@ form#textForm input#button_send{
 .list-holder{
     height: 75%; 
     width: 100%;
+    background-color: #fff;
+    float: left;
 }
 
 
 .list-holder ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow:hidden; 
+    overflow-y:scroll;
+    height: 80%;
+    max-height: 92vh;
 }
 
 .list-holder ul li {
-  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
-  border-bottom: 1px solid #ccc;
+    font: 200 18px/1.5 Helvetica, Verdana, sans-serif;
 }
 
-l.list-holder ul li:last-child {
-  border: none;
+.list-holder ul li div.sentence{
+    font-weight: bold;
 }
 
+.list-holder ul li div.emotion-tone, .list-holder ul li div.writing-tone, .list-holder ul li div.social-tone{
+    width: 33.333333%;
+    float: left;
+    font-size: 10px;
+    border-bottom: 1px solid #ccc;
+}
 
+.history.list-holder ul li div.sentence{
+    width: 50%;
+    float: left;
+    font-weight: bold;
+}
+
+.history.list-holder ul li div.analyse-date{
+    font-style: italic;
+    width: 10%;
+    float: right;
+    text-align: center;
+    /*font-size: 13px;*/
+}
+
+.history.list-holder ul li div.analyse_id{
+    display: none;
+}
 
 canvas#graph{
     width: 25%;
     height: 100%;
+}
+
+.legend {
+    width: 10em;
+    border: 1px solid black;
+}
+
+.legend .title {
+    display: block;
+    margin-bottom: 0.5em;
+    line-height: 1.2em;
+    padding: 0 0.3em;
+}
+
+.legend .color-sample {
+    display: block;
+    float: left;
+    width: 1em;
+    height: 1em;
+    border: 2px solid; /* Comment out if you don't want to show the fillColor */
+    border-radius: 0.5em; /* Comment out if you prefer squarish samples */
+    margin-right: 0.5em;
 }
 
 
