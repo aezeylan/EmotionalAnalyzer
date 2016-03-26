@@ -304,3 +304,9 @@ canvas#graphA,canvas#graphB,canvas#graphC{
     background: url(../img/emoticons.gif) 113px 145px;
 }
 
+.undefined{
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 392px 120px;
+}
+

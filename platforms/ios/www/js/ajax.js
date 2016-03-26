@@ -186,8 +186,8 @@ function showAnalyzedData(response,isHistory, analyse_id) {
       var localData = JSON.parse(window.localStorage.getItem(analyse_id));
       analyzeType = localData;
     }else{
-      // settingsHistoryOn(response);
-      saveAnalyse(response);
+      settingsHistoryOn(response);
+      // saveAnalyse(response);
       analyzeType = response;
     }
       
@@ -374,12 +374,15 @@ function showHistory() {
 
 function addToHistory(analyse_id){
   //jquery append id=list 
-  sentences = JSON.parse(localStorage[analyse_id]);
-  var li = '<li><a href="#" class="show-details">' +
-  '<div class="analyse_id" id="'+sentences._id+'">'+sentences._id+'...</div>' +
-  '<div class="sentence">'+sentences.text.substring(0,20)+'...</div>' +
-  '<div class="analyse-date">'+sentences.date.split('T')[0]+'</div></a></li>';
-  $('.history.list-holder #list').append(li);
+  if(!(window.localStorage.getItem('saveHistory'))){
+    sentences = JSON.parse(localStorage[analyse_id]);
+    var li = '<li><a href="#" class="show-details">' +
+    '<div class="analyse_id" id="'+sentences._id+'">'+sentences._id+'...</div>' +
+    '<div class="sentence">'+sentences.text.substring(0,20)+'...</div>' +
+    '<div class="analyse-date">'+sentences.date.split('T')[0]+'</div></a></li>';
+    $('.history.list-holder #list').append(li);
+  }
+  
 }
 
 function createDetailsPage() {
@@ -394,12 +397,10 @@ function refreshData() {
 }
 
 
-function settingsHistoryOn(status) {
-  $('#savingHistory').on('change', function() {
-      if(JSON.parse($(this).val()) == 'on'){
-        saveAnalyse(status);
-      }
-  });
+function settingsHistoryOn(data) {
+  if($('#savingHistory').val() == 'on'){
+    saveAnalyse(data);
+  }
 }
 
 function saveSettings() {
@@ -436,10 +437,10 @@ function activePage() {
 $(document).on('ready', function(){
     messagePost();
     showHistory();  
-    // activePage();
-    // saveSettings();
-    // getSettings();
-     showAlert();
+    activePage();
+    saveSettings();
+    getSettings();
+     // showAlert();
 });
 
 

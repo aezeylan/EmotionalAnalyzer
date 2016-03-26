@@ -34,12 +34,11 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        // startUpPage();
+        startUpPage();
     },
     startUpPage: function() {
         var currentState = window.localStorage.getItem('activePage');
-        $(document).on("pageshow", '#'+currentState, function (e, data) {
-        });
+        $.mobile.changePage("#"+currentState);
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
