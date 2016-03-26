@@ -220,81 +220,85 @@ canvas#graphA,canvas#graphB,canvas#graphC{
     border-radius: 4px;
 }
 
+.ui-field-contain>label{
+    width: 100%;
+}
+
 
 /* Sprites */
-#Anger {
+.Anger {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 205.5px 120px;
 }
 
-#Disgust {
+.Disgust {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 392px 97px;
 }
 
-#Fear {
+.Fear {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 392px 0;
 }
 
-#Joy {
+.Joy {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) -15px 396px;
 }
 
-#Sadness {
+.Sadness {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 206px 0;
 }
 
-#Analytical {
+.Analytical {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 205.5px 97px;
 }
 
-#Confident {
+.Confident {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 390px 49px;
 }
 
-#Tentative {
+.Tentative {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 205.5px 145px;
 }
 
-#Openness {
+.Openness {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 299px 145px;
 }
 
-#Conscientiousness {
+.Conscientiousness {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 206px 396px;
 }
 
-#Extraversion {
+.Extraversion {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 113px 97px;
 }
 
-#Agreeableness {
+.Agreeableness {
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 206px 24px;
 }
 
-#EmotionalRange{
+.Emotional.Range{
     width: 24px;
     height: 25px;
     background: url(../img/emoticons.gif) 113px 145px;
