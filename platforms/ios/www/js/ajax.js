@@ -15,7 +15,7 @@ function messagePost() {
     $.ajax({
         beforeSend: function() { $.mobile.loading("show") }, 
         complete: function() { $.mobile.loading("hide") },
-        url: "https://emotionanalyzer.herokuapp.com/analyzer",
+        url: "https://emotionanalyzer.herokuapp.com/analyzer/analyze",
         type: "post",
         contentType: "application/json",
         data: data,
@@ -47,6 +47,7 @@ function filterToneScore(sort,array) {
 }
 
 function getResults(response) {
+      // settingsHistoryOn(response);
       saveAnalyse(response);
       var list = '<ul data-role="listview" id="list">';
       var e_tone;
@@ -83,14 +84,14 @@ function getResults(response) {
 
               list += '<li>';
               list += '<div class="sentence">'+sentences[i].text+'</div>';
-              list += '<div class="emotion-tone">'+filterToneScore("score",e_tone).tone_name+" - " +Math.round(filterToneScore("score",e_tone).score*100)+'%</div>';
-              list += '<div class="writing-tone">'+filterToneScore("score",w_tone).tone_name+" - " +Math.round(filterToneScore("score",w_tone).score*100)+'%</div>';
-              list += '<div class="social-tone">'+filterToneScore("score",s_tone).tone_name+" - " +Math.round(filterToneScore("score",s_tone).score*100)+'%</div>';
+              list += '<div class="emotion-tone"><img id="'+filterToneScore("score",e_tone).tone_name+'" src="">'+filterToneScore("score",e_tone).tone_name+" - " +Math.round(filterToneScore("score",e_tone).score*100)+'%</div>';
+              list += '<div class="writing-tone"><img id="'+filterToneScore("score",w_tone).tone_name+'" src="">'+filterToneScore("score",w_tone).tone_name+" - " +Math.round(filterToneScore("score",w_tone).score*100)+'%</div>';
+              list += '<div class="social-tone"><img id="'+filterToneScore("score",s_tone).tone_name+'" src="">'+filterToneScore("score",s_tone).tone_name+" - " +Math.round(filterToneScore("score",s_tone).score*100)+'%</div>';
               list += '</li>';
         }
         list += '</ul>';
 
-        $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graphA"></canvas><canvas id="graphB"></canvas><canvas id="graphC"></canvas></div><div class="list-holder">'+list+'</div></div>').insertBefore('#home');
+        $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="list-holder">'+list+'</div></div>').insertBefore('#home');
         $('#resultAnalyse').animate({'top':'0'},300);  
         
         var e_category = response.analysis.document_tone.tone_categories[0].tones;
@@ -104,7 +105,20 @@ function getResults(response) {
              $('#text').val('');
         });
     }else{
-        alert('An error has occured. Please try again! Try to write more than one English sentences.');
+        // alert('An error has occured. Please try again! Try to write more than one English sentences.');
+        $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="list-holder">'+response.text+'</div></div>').insertBefore('#home');
+        $('#resultAnalyse').animate({'top':'0'},300);  
+        
+        var e_category = response.analysis.document_tone.tone_categories[0].tones;
+        var w_category = response.analysis.document_tone.tone_categories[1].tones;
+        var s_category = response.analysis.document_tone.tone_categories[2].tones;
+        createChart(e_category, w_category, s_category);
+        
+
+        $('#close_details').on('tap',function(){
+             $('#resultAnalyse').animate({'top':'-100%'},300, function(){$(this).remove();});  
+             $('#text').val('');
+        });
     }
 }
 
@@ -119,7 +133,7 @@ function createChart(e_category, w_category, s_category) {
 
     for (var i = 0; i < e_category.length; i++) {
       createJSONA = {};
-      createJSONA["value"] = e_category[i].score*100;
+      createJSONA["value"] = Math.round(e_category[i].score*100);
       createJSONA["color"] = colorsA[i];
       createJSONA["highlight"] = colorsA[i];
       createJSONA["label"] = e_category[i].tone_name;
@@ -132,7 +146,7 @@ function createChart(e_category, w_category, s_category) {
     for (var i = 0; i < w_category.length; i++) {
 
       createJSONB = {};
-      createJSONB["value"] = w_category[i].score*100;
+      createJSONB["value"] = Math.round(w_category[i].score*100);
       createJSONB["color"] = colorsB[i];
       createJSONB["highlight"] = colorsB[i];
       createJSONB["label"] = w_category[i].tone_name;
@@ -146,27 +160,31 @@ function createChart(e_category, w_category, s_category) {
 
     for (var i = 0; i < s_category.length; i++) {
       createJSONC = {};
-      createJSONC["value"] = s_category[i].score*100;
+      createJSONC["value"] = Math.round(s_category[i].score*100);
       createJSONC["color"] = colorsC[i];
       createJSONC["highlight"] = colorsC[i];
       createJSONC["label"] = s_category[i].tone_name;
 
        dataC.push(createJSONC); 
     }
+
+    var doughnutOptions = {
+      legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%> - <%=segments[i].value%>%</li><%}%></ul>"
+    };
  
-    var myDoughnutChartA = new Chart(document.getElementById("graphA").getContext("2d")).Doughnut(dataA);
-    var myDoughnutChartB = new Chart(document.getElementById("graphB").getContext("2d")).Doughnut(dataB);
-    var myDoughnutChartC = new Chart(document.getElementById("graphC").getContext("2d")).Doughnut(dataC);
-// var ctx = document.getElementById("graphA").getContext("2d");
+    var myDoughnutChartA = new Chart(document.getElementById("graphA").getContext("2d")).Pie(dataA, doughnutOptions);
+    var myDoughnutChartB = new Chart(document.getElementById("graphB").getContext("2d")).Pie(dataB, doughnutOptions);
+    var myDoughnutChartC = new Chart(document.getElementById("graphC").getContext("2d")).Pie(dataC, doughnutOptions);
 
-// var myChart = new Chart(ctx).Doughnut(dataA, options);
-    // document.getElementById('js-legend').innerHTML = myDoughnutChartA.generateLegend();
+    //then you just need to generate the legend
+    var legendA = myDoughnutChartA.generateLegend();
+    var legendB = myDoughnutChartB.generateLegend();
+    var legendC = myDoughnutChartC.generateLegend();
 
-
-  // var ctx = document.getElementById("graphA").getContext("2d");
-  // var pieChart = new Chart(ctx).Pie(dataA);
-
-  // legend(document.getElementById("graphA"), dataA, pieChart);
+    //and append it to your page somewhere
+    $('#js-legendA').append(legendA);
+    $('#js-legendB').append(legendB);
+    $('#js-legendC').append(legendC);
 
 }
 
@@ -175,6 +193,7 @@ function saveAnalyse(data) {
     window.localStorage.setItem(data._id, dataAnalyse);
     // addhistory oproepen
     addToHistory(data._id);
+    // showAlert();
 }
 
 function showHistory() {
@@ -189,10 +208,10 @@ function showHistory() {
     addToHistory(analyseItem);
   }
 
-
-  $(document).on('tap', '#show-details' ,function(analyse_id){ 
+  $('.show-details').on('tap' ,function(analyse_id){ 
     analyse_id = $(this).children('.analyse_id').attr('id');
     createDetailsPage();
+    alert('demo');
     $.mobile.changePage('#details', { transition: "slide"} );
     showHistoryDetails(analyse_id);
   });
@@ -201,9 +220,9 @@ function showHistory() {
 function addToHistory(analyse_id){
   //jquery append id=list 
   sentences = JSON.parse(localStorage[analyse_id]);
-  var li = '<li><a href="#" id="show-details">' +
-  '<div class="analyse_id" id="'+sentences._id+'">'+sentences.text.substring(0,40)+'...</div>' +
-  '<div class="sentence">'+sentences.text.substring(0,40)+'...</div>' +
+  var li = '<li><a href="#" class="show-details">' +
+  '<div class="analyse_id" id="'+sentences._id+'">'+sentences._id+'...</div>' +
+  '<div class="sentence">'+sentences.text.substring(0,20)+'...</div>' +
   '<div class="analyse-date">'+sentences.date.split('T')[0]+'</div></a></li>';
   $('.history.list-holder #list').append(li);
 }
@@ -246,9 +265,9 @@ function showHistoryDetails(analyse_id) {
 
         list += '<li>';
         list += '<div class="sentence">'+sentences[i].text+'</div>';
-        list += '<div class="emotion-tone">'+filterToneScore("score",e_tone).tone_name+" - " + Math.round(filterToneScore("score",e_tone).score*100)+'%</div>';
-        list += '<div class="writing-tone">'+filterToneScore("score",w_tone).tone_name+" - " +Math.round(filterToneScore("score",w_tone).score*100)+'%</div>';
-        list += '<div class="social-tone">'+filterToneScore("score",s_tone).tone_name+" - " +Math.round(filterToneScore("score",s_tone).score*100)+'%</div>';
+        list += '<div class="emotion-tone"><img id="'+filterToneScore("score",e_tone).tone_name+'" src="">'+filterToneScore("score",e_tone).tone_name+" - " + Math.round(filterToneScore("score",e_tone).score*100)+'%</div>';
+        list += '<div class="writing-tone"><img id="'+filterToneScore("score",w_tone).tone_name+'" src="">'+filterToneScore("score",w_tone).tone_name+" - " +Math.round(filterToneScore("score",w_tone).score*100)+'%</div>';
+        list += '<div class="social-tone"><img id="'+filterToneScore("score",s_tone).tone_name+'" src="">'+filterToneScore("score",s_tone).tone_name+" - " +Math.round(filterToneScore("score",s_tone).score*100)+'%</div>';
         list += '</li>';
     }
     list += '</ul>';
@@ -268,7 +287,7 @@ function showHistoryDetails(analyse_id) {
 }
 
 function createDetailsPage() {
-  var detailsPage = '<div data-role="page" id="details"><div data-role="header"><h1>Emotional Analyzer - Details</h1><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a></div><div role="main" class="ui-content"><div class="details graph-holder"><canvas id="graphA"></canvas><div id="placeholder"></div><canvas id="graphB"></canvas><canvas id="graphC"></canvas></div><div class="details list-holder"></div></div><div data-role="footer"><h4>Footer Text</h4></div></div>';
+  var detailsPage = '<div data-role="page" id="details"><div data-role="header"><h1>Emotional Analyzer - Details</h1><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a></div><div role="main" class="ui-content"><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="details list-holder"></div></div><div data-role="footer"><h4>Footer Text</h4></div></div>';
   $(detailsPage).insertAfter('#history');
 }
 
@@ -279,9 +298,59 @@ function refreshData() {
 }
 
 
+// function settingsHistoryOn(status) {
+//   $('#savingHistory').on('change', function() {
+//       if(JSON.parse($(this).val()) == 'on'){
+//         saveAnalyse(status);
+//       }
+//   });
+// }
+
+// function saveSettings() {
+//   $('#savingHistory').on('change', function() {
+//       window.localStorage.setItem('saveHistory',  $(this).val());
+//   });
+// }
+
+// function getSettings() {
+//   var currentState = window.localStorage.getItem('saveHistory');
+//   $('#savingHistory').val(currentState).change();
+// }
+
+
+function showAlert() {
+    navigator.notification.alert(
+    'You\'re analyze is saved in history.',  // message
+    'Een callback',         // callback
+    'Analyze is saved',            // title
+    'Analyze saved'                  // buttonName
+  );
+}
+
+
+function activePage() {
+  $(document).on("pagechange", function (e, data) {
+      window.localStorage.setItem('activePage',  data.toPage[0].id);
+  });
+}
+
+
+
+
 $(document).on('ready', function(){
     messagePost();
-    showHistory();
-    refreshData();
+    showHistory();  
+    // activePage();
+    // saveSettings();
+    // getSettings();
+     showAlert();
 });
 
+
+// $( document ).on( 'pageinit','#history', function(event){
+//   // alert('Demo');  
+// //   $('#list li').on('tap', function(){
+// //     alert('tap');  
+// // });
+
+// });

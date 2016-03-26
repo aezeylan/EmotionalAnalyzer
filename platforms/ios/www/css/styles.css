@@ -145,7 +145,7 @@ form#textForm input#button_send{
 }
 
 .graph-holder{
-    height: 25%; 
+    height: 30%; 
     width: 100%;
 }
 .list-holder{
@@ -163,6 +163,7 @@ form#textForm input#button_send{
     overflow:hidden; 
     overflow-y:scroll;
     height: 80%;
+    max-height: 92vh;
 }
 
 .list-holder ul li {
@@ -181,7 +182,7 @@ form#textForm input#button_send{
 }
 
 .history.list-holder ul li div.sentence{
-    width: 50%;
+    width: 60%;
     float: left;
     font-weight: bold;
 }
@@ -189,7 +190,7 @@ form#textForm input#button_send{
 .history.list-holder ul li div.analyse-date{
     font-style: italic;
     width: 10%;
-    float: right;
+    float: left;
     text-align: center;
     /*font-size: 13px;*/
 }
@@ -198,31 +199,104 @@ form#textForm input#button_send{
     display: none;
 }
 
-canvas#graph{
+canvas#graphA,canvas#graphB,canvas#graphC{
     width: 25%;
     height: 100%;
-}
-
-.legend {
-    width: 10em;
-    border: 1px solid black;
-}
-
-.legend .title {
-    display: block;
-    margin-bottom: 0.5em;
-    line-height: 1.2em;
-    padding: 0 0.3em;
-}
-
-.legend .color-sample {
-    display: block;
     float: left;
-    width: 1em;
-    height: 1em;
-    border: 2px solid; /* Comment out if you don't want to show the fillColor */
-    border-radius: 0.5em; /* Comment out if you prefer squarish samples */
-    margin-right: 0.5em;
 }
 
+.ui-panel{
+    width: 20%;
+}
+
+
+.chart-legend ul li { list-style:none; }
+.chart-legend { float: left;margin-left: -50px; }
+.chart-legend li span{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+
+
+/* Sprites */
+#Anger {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 205.5px 120px;
+}
+
+#Disgust {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 392px 97px;
+}
+
+#Fear {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 392px 0;
+}
+
+#Joy {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) -15px 396px;
+}
+
+#Sadness {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 206px 0;
+}
+
+#Analytical {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 205.5px 97px;
+}
+
+#Confident {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 390px 49px;
+}
+
+#Tentative {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 205.5px 145px;
+}
+
+#Openness {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 299px 145px;
+}
+
+#Conscientiousness {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 206px 396px;
+}
+
+#Extraversion {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 113px 97px;
+}
+
+#Agreeableness {
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 206px 24px;
+}
+
+#EmotionalRange{
+    width: 24px;
+    height: 25px;
+    background: url(../img/emoticons.gif) 113px 145px;
+}
 
