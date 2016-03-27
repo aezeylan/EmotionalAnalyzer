@@ -370,60 +370,100 @@ function createChart(e_category, w_category, s_category) {
 function saveAnalyse(data) {
     var dataAnalyse = JSON.stringify(data);
     window.localStorage.setItem(data._id, dataAnalyse);
-    addToHistory(data._id);
+    // addToHistory(data._id);
+    addToArray(data._id);
     // showAlert();
 }
 
-function addMore() {
-    $.mobile.loading("show", {
-        text: "loading more..",
-        textVisible: true,
-        theme: "a"
-    });
-    setTimeout(function () {
-        var items = '';
-        for (var i = 0; i < 10; i++) {
-            items += "<li>" + i + "</li>";
-        }
-        $("#list").append(items).listview("refresh");
-        $.mobile.loading("hide");
-    }, 500);
+function checkScroll() {
+  var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
+    screenHeight = $.mobile.getScreenHeight(),
+    contentHeight = $(".ui-content", activePage).outerHeight(),
+    header = $(".ui-header", activePage).outerHeight() - 1,
+    scrolled = $(window).scrollTop(),
+    footer = $(".ui-footer", activePage).outerHeight() - 1,
+    scrollEnd = contentHeight - screenHeight + header + footer;;
+    if (activePage[0].id == "history" && scrolled >= scrollEnd) {
+      console.log("adding...");
+      addMore(activePage);
+    }
+}
+
+function addMore(page) {
+  $(document).off("scrollstop");
+  $.mobile.loading("show", {
+    text: "loading more..",
+    textVisible: true
+  });
+  setTimeout(function() {
+      var items = '',
+      last = $("li", page).length,
+      cont = last + 5;
+      analysis = analysisArray();
+      var lastAnalyse = Object.keys(analysis).length;
+
+      for (var index = last; index < cont; index++) {
+           // addToHistory(analysis[index]);
+         if(index <= lastAnalyse){
+            addToHistory(analysis[index]);
+             $.mobile.loading("hide");
+         }
+      }
+
+    // $("#list", page).append(items).listview("refresh");
+    $.mobile.loading("hide");
+    $(document).on("scrollstop", checkScroll);
+  }, 500);
+}
+
+$(document).on("scrollstop", checkScroll);
+
+function analysisArray(analysis) {
+  var analysisArray = analysis;
+  var counter = 0;
+  analysisArray = {};
+  for (var analyseItem in localStorage) {
+    if(analyseItem != 'saveHistory'){
+      if(analyseItem != 'activePage'){
+        analysisArray[counter] = analyseItem;
+        counter++;
+      }
+    }
+  }
+  return analysisArray;
 }
 
 function showHistory() {
   var list = '<ul data-role="listview" id="list">';
-  // var sentences; 
-  var counter = 0;
   list += '</ul>';
   $('.history.list-holder').append(list);
+  analysis = analysisArray();
 
-  for (var analyseItem in localStorage) {
-    if(analyseItem != 'saveHistory'){
-      if(analyseItem != 'activePage'){
-          counter++;
-        // if(counter < 11){
-          addToHistory(analyseItem);
-            
-           // // weet alleen niet hoe ik verder +10 moet doen
-           // $(document).on("scrollstop", function (e) {
-           //    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
-           //    screenHeight = $.mobile.getScreenHeight(),
-           //    contentHeight = $(".ui-content", activePage).outerHeight(),
-           //    header = $(".ui-header", activePage).outerHeight() - 1,
-           //    scrolled = $(window).scrollTop(),
-           //    footer = $(".ui-footer", activePage).outerHeight() - 1,
-           //    scrollEnd = contentHeight - screenHeight + header + footer;
-           //    if (activePage[0].id == "history" && scrolled >= scrollEnd) {
-           //      console.log("adding...");
-           //      // addMore();
-           //      // continue;
-           //      addToHistory(analyseItem);
-           //    }
-          // });
-        // }
-      }
-    }
+
+  // for (var analyseItem in localStorage) {
+  //   if(analyseItem != 'saveHistory'){
+  //     if(analyseItem != 'activePage'){
+  //       // counter++;
+  //       // if(counter < limit){
+  //         // addToHistory(analyseItem);
+  //         analysis.push(analyseItem); 
+  //       // }
+  //     }
+  //   }
+  // }
+
+
+   
+  $.each(analysis, function(key, value) {
+      console.log(key + ' - ' + value);
+  });
+
+  for (index = 0; index < 5; index++) {
+      console.log(index);
+      console.log(analysis[index]);
+      addToHistory(analysis[index]);  
   }
+
 
   $('.show-details').on('tap' ,function(analyse_id){ 
     analyse_id = $(this).children('.analyse_id').attr('id');
@@ -438,21 +478,27 @@ function showHistory() {
 function addToHistory(analyse_id){
   //jquery append id=list 
   // old = !(window.localStorage.getItem('saveHistory'))
+
   if(analyse_id != 'saveHistory'){
     if(analyse_id != 'activePage'){
       var sentences = JSON.parse(localStorage[analyse_id]);
       var li = '<li><a href="#" class="show-details">' +
-      '<div class="analyse_id" id="'+sentences._id+'">'+sentences._id+'...</div>' +
+      '<div class="analyse_id" id="'+sentences._id+'">'+sentences._id+'</div>' +
       '<div class="sentence">'+sentences.text.substring(0,20)+'...</div>' +
-      '<div class="analyse-date">'+sentences.date.split('T')[0]+'</div></a></li>';
+      '<div class="analyse-date">'+sentences.date.split('T')[0]+' '+sentences.date.split('T')[1]+'</div></a></li>';
       $('.history.list-holder #list').append(li);
     }
   }
-  
+}
+
+function addToArray(analyse_id){
+   var lastAnalyse = Object.keys(analysis).length;
+   analysis = analysisArray();
+   analysis[lastAnalyse+1] = analyse_id;
 }
 
 function createDetailsPage() {
-  var detailsPage = '<div data-role="page" id="details"><div data-role="header"><h1>Emotional Analyzer - Details</h1><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><button onclick="captureImage();">Capture Image</button></div><div role="main" class="ui-content"><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="details list-holder"></div></div><div data-role="footer"><h4>Footer Text</h4></div></div>';
+  var detailsPage = '<div data-role="page" id="details"><div data-role="header"><h1>Emotional Analyzer - Details</h1><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a></div><div role="main" class="ui-content"><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="details list-holder"></div></div><div data-role="footer"><h4>Footer Text</h4></div></div>';
   $(detailsPage).insertAfter('#history');
 }
 
@@ -480,7 +526,17 @@ function getSettings() {
   $('#savingHistory').val(currentState).change();
 }
 
+function activePage() {
+  $(document).on("pagechange", function (e, data) {
+    if($.mobile.activePage.attr('id') != 'details'){
+       window.localStorage.setItem('activePage',  data.toPage[0].id);
+    }
+  });
+}
 
+
+
+// NATIVE
 function showAlert() {
   navigator.notification.alert(
     'You\'re analyze is saved in history.',  // message
@@ -491,55 +547,59 @@ function showAlert() {
 }
 
 
-function activePage() {
-  $(document).on("pagechange", function (e, data) {
-    if($.mobile.activePage.attr('id') != 'details'){
-       window.localStorage.setItem('activePage',  data.toPage[0].id);
-    }
+function sampleFile() {
+  $('#button_sample').on('tap',function(event){
+    event.preventDefault();
+    onDeviceReady();
   });
 }
 
 
-    // Called when capture operation is finished
+ // Wait for PhoneGap to load
     //
-    function captureSuccess(mediaFiles) {
-        var i, len;
-        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-            uploadFile(mediaFiles[i]);
-        }
+    function onLoad() {
+        document.addEventListener("deviceready", onDeviceReady, false);
     }
 
-    // Called if something bad happens.
+    // PhoneGap is ready
     //
-    function captureError(error) {
-        var msg = 'An error occurred during capture: ' + error.code;
-        navigator.notification.alert(msg, null, 'Uh oh!');
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
     }
 
-    // A button will call this function
-    //
-    function captureImage() {
-        // Launch device camera application,
-        // allowing user to capture up to 2 images
-        navigator.device.capture.captureImage(captureSuccess, captureError, {limit: 2});
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("../demo.txt", null, gotFileEntry, fail);
     }
 
-    // Upload files to server
-    function uploadFile(mediaFile) {
-        var ft = new FileTransfer(),
-            path = mediaFile.fullPath,
-            name = mediaFile.name;
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
 
-        ft.upload(path,
-            "http://my.domain.com/upload.php",
-            function(result) {
-                console.log('Upload success: ' + result.responseCode);
-                console.log(result.bytesSent + ' bytes sent');
-            },
-            function(error) {
-                console.log('Error uploading file ' + path + ': ' + error.code);
-            },
-            { fileName: name });
+    function gotFile(file){
+        readDataUrl(file);
+        readAsText(file);
+    }
+
+    function readDataUrl(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            console.log("Read as data URL");
+            console.log(evt.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function readAsText(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            console.log("Read as text");
+            console.log(evt.target.result);
+        };
+        reader.readAsText(file);
+    }
+
+    function fail(evt) {
+        console.log(evt.target.error.code);
     }
 
 
@@ -551,6 +611,7 @@ $(document).on('ready', function(){
     saveSettings();
     getSettings();
     showAlert();
+    sampleFile();
 });
 
 

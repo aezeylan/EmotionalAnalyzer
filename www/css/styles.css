@@ -60,12 +60,22 @@ form#textForm textarea#text{
 }
 
 form#textForm input#button_send{
-    width: 100%;
+    width: 50%;
+    height: 8%;
+    padding: 0;
+    border:0;
+    border-radius: 0px;
+    float: left;
+}
+
+#button_sample{
+    width: 50%;
     height: 8%;
     padding: 0;
     border:0;
     border-radius: 0px;
 }
+
 
 .content {
     width: 100%;
