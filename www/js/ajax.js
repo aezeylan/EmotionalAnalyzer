@@ -594,6 +594,7 @@ function sampleFile() {
         reader.onloadend = function(evt) {
             console.log("Read as text");
             console.log(evt.target.result);
+            alert(evt.target.result);
         };
         reader.readAsText(file);
     }
