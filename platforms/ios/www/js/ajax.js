@@ -45,6 +45,7 @@ function filterToneScore(sort,array) {
   return tone;
 }
 
+// OLD VERSON
 function getResults(response) {
       settingsHistoryOn(response);
       // saveAnalyse(response);
@@ -120,6 +121,7 @@ function getResults(response) {
     }
 }
 
+// OLD VERSON
 function showHistoryDetails(analyse_id) {
 
     var localData = JSON.parse(window.localStorage.getItem(analyse_id));
@@ -178,6 +180,7 @@ function showHistoryDetails(analyse_id) {
          
 }
 
+// NEW VERSON
 function showAnalyzedData(response,isHistory, analyse_id) {
   
     var analyzeType;
@@ -196,6 +199,15 @@ function showAnalyzedData(response,isHistory, analyse_id) {
     var e_tone;
     var w_tone;
     var s_tone;
+    var e_tone_name;
+    var w_tone_name;
+    var s_tone_name;
+    var filtered_e;
+    var filtered_w;
+    var filtered_s;
+    var result_e;
+    var result_w;
+    var result_s;
     var tone_result;
     var toneCategorie;
     var sentences = analyzeType.analysis.sentences_tone;
@@ -206,32 +218,44 @@ function showAnalyzedData(response,isHistory, analyse_id) {
       
     if(sentences){
       for (var i = 0; i < sentences.length; i++) {
-        toneCategorie  = sentences[i].tone_categories;   
-         for (var j = 0; j < toneCategorie.length; j++) {
-            if(j==0) {
-              e_tone = toneCategorie[j].tones;
-              for (var k = 0; k < e_tone.length; k++) {
-                e_tone[k].score;
-              }
+            toneCategorie  = sentences[i].tone_categories;   
+             for (var j = 0; j < toneCategorie.length; j++) {
+                if(j==0) {
+                  e_tone = toneCategorie[j].tones;
+                  for (var k = 0; k < e_tone.length; k++) {
+                    e_tone[k].score;
+                  }
+                }
+                if(j==1) {
+                  w_tone = toneCategorie[j].tones;
+                  for (var k = 0; k < w_tone.length; k++) {
+                    w_tone[k].score;
+                  }
+                }
+                if(j==2) {
+                  s_tone = toneCategorie[j].tones;
+                  for (var k = 0; k < s_tone.length; k++) {
+                    s_tone[k].score;
+                  }
+                }   
             }
-            if(j==1) {
-              w_tone = toneCategorie[j].tones;
-              for (var k = 0; k < w_tone.length; k++) {
-                w_tone[k].score;
-              }
-            }
-            if(j==2) {
-              s_tone = toneCategorie[j].tones;
-              for (var k = 0; k < s_tone.length; k++) {
-                s_tone[k].score;
-              }
-            }   
-        }
+
+            filtered_e = Math.round(filterToneScore("score",e_tone).score*100);
+            filtered_w = Math.round(filterToneScore("score",w_tone).score*100);
+            filtered_s = Math.round(filterToneScore("score",s_tone).score*100);
+            e_tone_name = filterToneScore("score",e_tone).tone_name;
+            w_tone_name = filterToneScore("score",w_tone).tone_name;
+            s_tone_name = filterToneScore("score",s_tone).tone_name;
+
+            if(isNaN(filtered_e)){result_e = "Emotion not found";}else{result_e = e_tone_name+" - " +filtered_e+'%';}
+            if(isNaN(filtered_w)){result_w = "Emotion not found";}else{result_w = w_tone_name+" - " +filtered_w+'%';}
+            if(isNaN(filtered_s)){result_s = "Emotion not found";}else{result_s = s_tone_name+" - " +filtered_s+'%';}
+
             list += '<li>';
             list += '<div class="sentence">'+sentences[i].text+'</div>';
-            list += '<div class="emotion-tone"><img class="'+filterToneScore("score",e_tone).tone_name+'" src="">'+filterToneScore("score",e_tone).tone_name+" - " +Math.round(filterToneScore("score",e_tone).score*100)+'%</div>';
-            list += '<div class="writing-tone"><img class="'+filterToneScore("score",w_tone).tone_name+'" src="">'+filterToneScore("score",w_tone).tone_name+" - " +Math.round(filterToneScore("score",w_tone).score*100)+'%</div>';
-            list += '<div class="social-tone"><img class="'+filterToneScore("score",s_tone).tone_name+'" src="">'+filterToneScore("score",s_tone).tone_name+" - " +Math.round(filterToneScore("score",s_tone).score*100)+'%</div>';
+            list += '<div class="emotion-tone"><img class="'+e_tone_name+'" src="">'+result_e+'</div>';
+            list += '<div class="writing-tone"><img class="'+w_tone_name+'" src="">'+result_w+'</div>';
+            list += '<div class="social-tone"><img class="'+s_tone_name+'" src="">'+result_s+'</div>';
             list += '</li>';
         }
         list += '</ul>';
@@ -258,7 +282,7 @@ function showAnalyzedData(response,isHistory, analyse_id) {
 
     }else{
         if(isHistory == true){
-            $('.details.list-holder').append(list);
+            $('.details.list-holder').text(localData.text);
 
             $('#close_details').on('tap',function(){
                $.mobile.changePage('#history', { transition: "slide", reverse: true} );
@@ -346,20 +370,101 @@ function createChart(e_category, w_category, s_category) {
 function saveAnalyse(data) {
     var dataAnalyse = JSON.stringify(data);
     window.localStorage.setItem(data._id, dataAnalyse);
-    addToHistory(data._id);
+    // addToHistory(data._id);
+    addToArray(data._id);
     // showAlert();
+}
+
+function checkScroll() {
+  var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
+    screenHeight = $.mobile.getScreenHeight(),
+    contentHeight = $(".ui-content", activePage).outerHeight(),
+    header = $(".ui-header", activePage).outerHeight() - 1,
+    scrolled = $(window).scrollTop(),
+    footer = $(".ui-footer", activePage).outerHeight() - 1,
+    scrollEnd = contentHeight - screenHeight + header + footer;;
+    if (activePage[0].id == "history" && scrolled >= scrollEnd) {
+      console.log("adding...");
+      addMore(activePage);
+    }
+}
+
+function addMore(page) {
+  if(localStorage.length > 2){
+    $(document).off("scrollstop");
+    $.mobile.loading("show", {
+      text: "loading more..",
+      textVisible: true
+    });
+    setTimeout(function() {
+        var items = '',
+        last = $("li", page).length,
+        cont = last + 5;
+        analysis = analysisArray();
+        var lastAnalyse = Object.keys(analysis).length;
+
+        for (var index = last; index < cont; index++) {
+             // addToHistory(analysis[index]);
+           if(index <= lastAnalyse){
+              addToHistory(analysis[index]);
+               $.mobile.loading("hide");
+           }
+        }
+
+      // $("#list", page).append(items).listview("refresh");
+      $.mobile.loading("hide");
+      $(document).on("scrollstop", checkScroll);
+    }, 500);
+  }
+}
+
+$(document).on("scrollstop", checkScroll);
+
+function analysisArray(analysis) {
+  var analysisArray = analysis;
+  var counter = 0;
+  analysisArray = {};
+  for (var analyseItem in localStorage) {
+    if(analyseItem != 'saveHistory'){
+      if(analyseItem != 'activePage'){
+        analysisArray[counter] = analyseItem;
+        counter++;
+      }
+    }
+  }
+  return analysisArray;
 }
 
 function showHistory() {
   var list = '<ul data-role="listview" id="list">';
-  var sentences; 
-
   list += '</ul>';
   $('.history.list-holder').append(list);
+  analysis = analysisArray();
 
 
-  for (var analyseItem in localStorage) {
-    addToHistory(analyseItem);
+  // for (var analyseItem in localStorage) {
+  //   if(analyseItem != 'saveHistory'){
+  //     if(analyseItem != 'activePage'){
+  //       // counter++;
+  //       // if(counter < limit){
+  //         // addToHistory(analyseItem);
+  //         analysis.push(analyseItem); 
+  //       // }
+  //     }
+  //   }
+  // }
+
+
+  $.each(analysis, function(key, value) {
+      console.log(key + ' - ' + value);
+  });
+
+  for (index = 0; index < Object.keys(analysis).length; index++) {
+    if(index < 5){
+      console.log(index);
+      console.log(analysis[index]);
+      addToHistory(analysis[index]); 
+    }
   }
 
   $('.show-details').on('tap' ,function(analyse_id){ 
@@ -374,15 +479,24 @@ function showHistory() {
 
 function addToHistory(analyse_id){
   //jquery append id=list 
-  if(!(window.localStorage.getItem('saveHistory'))){
-    sentences = JSON.parse(localStorage[analyse_id]);
-    var li = '<li><a href="#" class="show-details">' +
-    '<div class="analyse_id" id="'+sentences._id+'">'+sentences._id+'...</div>' +
-    '<div class="sentence">'+sentences.text.substring(0,20)+'...</div>' +
-    '<div class="analyse-date">'+sentences.date.split('T')[0]+'</div></a></li>';
-    $('.history.list-holder #list').append(li);
+  // old = !(window.localStorage.getItem('saveHistory'))
+
+  if(analyse_id != 'saveHistory'){
+    if(analyse_id != 'activePage'){
+      var sentences = JSON.parse(localStorage[analyse_id]);
+      var li = '<li><a href="#" class="show-details">' +
+      '<div class="analyse_id" id="'+sentences._id+'">'+sentences._id+'</div>' +
+      '<div class="sentence">'+sentences.text.substring(0,20)+'...</div>' +
+      '<div class="analyse-date">'+sentences.date.split('T')[0]+' '+sentences.date.split('T')[1]+'</div></a></li>';
+      $('.history.list-holder #list').append(li);
+    }
   }
-  
+}
+
+function addToArray(analyse_id){
+   var lastAnalyse = Object.keys(analysis).length;
+   analysis = analysisArray();
+   analysis[lastAnalyse+1] = analyse_id;
 }
 
 function createDetailsPage() {
@@ -414,7 +528,17 @@ function getSettings() {
   $('#savingHistory').val(currentState).change();
 }
 
+function activePage() {
+  $(document).on("pagechange", function (e, data) {
+    if($.mobile.activePage.attr('id') != 'details'){
+       window.localStorage.setItem('activePage',  data.toPage[0].id);
+    }
+  });
+}
 
+
+
+// NATIVE
 function showAlert() {
   navigator.notification.alert(
     'You\'re analyze is saved in history.',  // message
@@ -425,22 +549,72 @@ function showAlert() {
 }
 
 
-function activePage() {
-  $(document).on("pagechange", function (e, data) {
-      window.localStorage.setItem('activePage',  data.toPage[0].id);
+function sampleFile() {
+  $('#button_sample').on('tap',function(event){
+    event.preventDefault();
+    onDeviceReady();
   });
 }
 
 
+ // Wait for PhoneGap to load
+    //
+    function onLoad() {
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+
+    // PhoneGap is ready
+    //
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    }
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("../demo.txt", null, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
+
+    function gotFile(file){
+        readDataUrl(file);
+        readAsText(file);
+    }
+
+    function readDataUrl(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            console.log("Read as data URL");
+            console.log(evt.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function readAsText(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            console.log("Read as text");
+            console.log(evt.target.result);
+            alert(evt.target.result);
+        };
+        reader.readAsText(file);
+    }
+
+    function fail(evt) {
+        console.log(evt.target.error.code);
+    }
+
 
 
 $(document).on('ready', function(){
-    messagePost();
-    showHistory();  
     activePage();
     saveSettings();
     getSettings();
-     // showAlert();
+    messagePost();
+    showHistory();  
+    // showAlert();
+    // sampleFile();
 });
 
 

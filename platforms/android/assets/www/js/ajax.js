@@ -282,7 +282,7 @@ function showAnalyzedData(response,isHistory, analyse_id) {
 
     }else{
         if(isHistory == true){
-            $('.details.list-holder').append(list);
+            $('.details.list-holder').text(localData.text);
 
             $('#close_details').on('tap',function(){
                $.mobile.changePage('#history', { transition: "slide", reverse: true} );
@@ -390,30 +390,32 @@ function checkScroll() {
 }
 
 function addMore(page) {
-  $(document).off("scrollstop");
-  $.mobile.loading("show", {
-    text: "loading more..",
-    textVisible: true
-  });
-  setTimeout(function() {
-      var items = '',
-      last = $("li", page).length,
-      cont = last + 5;
-      analysis = analysisArray();
-      var lastAnalyse = Object.keys(analysis).length;
+  if(localStorage.length > 2){
+    $(document).off("scrollstop");
+    $.mobile.loading("show", {
+      text: "loading more..",
+      textVisible: true
+    });
+    setTimeout(function() {
+        var items = '',
+        last = $("li", page).length,
+        cont = last + 5;
+        analysis = analysisArray();
+        var lastAnalyse = Object.keys(analysis).length;
 
-      for (var index = last; index < cont; index++) {
-           // addToHistory(analysis[index]);
-         if(index <= lastAnalyse){
-            addToHistory(analysis[index]);
-             $.mobile.loading("hide");
-         }
-      }
+        for (var index = last; index < cont; index++) {
+             // addToHistory(analysis[index]);
+           if(index <= lastAnalyse){
+              addToHistory(analysis[index]);
+               $.mobile.loading("hide");
+           }
+        }
 
-    // $("#list", page).append(items).listview("refresh");
-    $.mobile.loading("hide");
-    $(document).on("scrollstop", checkScroll);
-  }, 500);
+      // $("#list", page).append(items).listview("refresh");
+      $.mobile.loading("hide");
+      $(document).on("scrollstop", checkScroll);
+    }, 500);
+  }
 }
 
 $(document).on("scrollstop", checkScroll);
@@ -453,17 +455,17 @@ function showHistory() {
   // }
 
 
-   
   $.each(analysis, function(key, value) {
       console.log(key + ' - ' + value);
   });
 
-  for (index = 0; index < 5; index++) {
+  for (index = 0; index < Object.keys(analysis).length; index++) {
+    if(index < 5){
       console.log(index);
       console.log(analysis[index]);
-      addToHistory(analysis[index]);  
+      addToHistory(analysis[index]); 
+    }
   }
-
 
   $('.show-details').on('tap' ,function(analyse_id){ 
     analyse_id = $(this).children('.analyse_id').attr('id');
@@ -606,13 +608,13 @@ function sampleFile() {
 
 
 $(document).on('ready', function(){
-    messagePost();
-    showHistory();  
     activePage();
     saveSettings();
     getSettings();
-    showAlert();
-    sampleFile();
+    messagePost();
+    showHistory();  
+    // showAlert();
+    // sampleFile();
 });
 
 

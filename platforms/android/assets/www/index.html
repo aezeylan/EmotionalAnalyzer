@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1 target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1 target-densitydpi=medium-dpi, user-scalable=0" />
        
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
      	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -32,7 +31,7 @@
 				</form>
 				<a href="#home" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close pane</a>
 			</div> 
-		   <div data-role="header">
+		   <div data-role="header" data-position="fixed">
 		      <h2>Emotional Analyzer - Home</h2>
 		      <a href="#settings" id="open-settings" class="ui-btn ui-btn-right ui-btn-inline ui-corner-all ui-shadow">Open Panel</a>
 		   </div>
@@ -43,13 +42,13 @@
 	                <button class="ui-btn ui-btn-b" id="button_sample">Sample</button>
 	          </form>
 		   </div>
-		   <div data-role="footer">
+		   <div data-role="footer" data-position="fixed">
 		      <h4>Footer</h4>
 		   </div>
 		</div>
 
 		<div data-role="page" id="history" data-dom-cache="true">
-		   <div data-role="header">
+		   <div data-role="header" data-position="fixed">
 		      <h1>Emotional Analyzer - History</h1>
 		   </div>
 		   <div role="main" class="ui-content">
@@ -57,13 +56,13 @@
 			        
 			    </div>
 		   </div>
-		   <div data-role="footer">
+		   <div data-role="footer" data-position="fixed">
 		      <h4>Footer Text</h4>
 		   </div>
 		</div>
 
 		<div data-role="page" id="info" data-dom-cache="true">
-		   <div data-role="header">
+		   <div data-role="header" data-position="fixed">
 		      <h1>Emotional Analyzer - Information</h1>
 		   </div>
 		   <div role="main" class="ui-content">
@@ -71,7 +70,7 @@
 		      <p><a onclick='window.open("http://google.com","_system", "location=yes")' href='javascript:void(0)' >link</a></p>
 		      <a href="mailto:name@email.com">Demo mail</a>
 		   </div>
-		   <div data-role="footer">
+		   <div data-role="footer" data-position="fixed">
 		      <h4>Footer Text</h4>
 		   </div>
 		</div>
