@@ -488,7 +488,7 @@ function addToHistory(analyse_id){
       '<div class="analyse_id" id="'+sentences._id+'">'+sentences._id+'</div>' +
       '<div class="sentence">'+sentences.text.substring(0,20)+'...</div>' +
       '<div class="analyse-date">'+sentences.date.split('T')[0]+' '+sentences.date.split('T')[1]+'</div></a></li>';
-      $('.history.list-holder #list').append(li);
+      $('.history.list-holder #list').append(li).listview('refresh');
     }
   }
 }
