@@ -373,13 +373,7 @@ function createChart(e_category, w_category, s_category) {
       createJSONB["label"] = w_category[i].tone_name;
 
        dataB.push(createJSONB);
-        console.log(i); 
-       console.log(createJSONB); 
     }
-
-    console.log(dataB[0].value);
-    console.log(dataB[0].value);
-     console.log(createJSONB.value);
 
     var createJSONC;
     var dataC = [];
@@ -458,7 +452,7 @@ function checkScroll() {
 function addMore(page) {
   // HIER GAAT HET MIS MET DIE LOADINGBAR IN HISTORY, IK DACHT OM HET OP TE PAKKEN ALS ER MEER DAN 3 ITEMS IN LOCALSTORAGE ZIT. 
   // MAAR ZO TE ZIEN WERKT HET NIET OP TELEFOON.
-  if(localStorage.length > 2){
+   $.mobile.loading("hide");
     $(document).off("scrollstop");
     $.mobile.loading("show", {
       text: "loading more..",
@@ -482,7 +476,6 @@ function addMore(page) {
       $.mobile.loading("hide");
       $(document).on("scrollstop", checkScroll);
     }, 500);
-  }
 }
 
 $(document).on("scrollstop", checkScroll);
@@ -697,9 +690,11 @@ $(document).on('ready', function(){
     getSettings();
     messagePost();
     showHistory();  
-    showAlert();
+    // showAlert();
     sampleFile();
 });
+
+
 
 
 // $( document ).on( 'pageinit','#history', function(event){
