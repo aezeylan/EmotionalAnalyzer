@@ -267,20 +267,34 @@ function showAnalyzedData(response,isHistory, analyse_id) {
 
       // HIER CONTROLEER IK OF HET GESCHIEDENIS DETAILS IS OF DIRECTE ANALYSE.
         if(isHistory == true){
-           $('.details.list-holder').append(list);
 
+          var detailsPage = createDetailsPage();
+          $(detailsPage).insertAfter('#history');
+           $('.details.list-holder').append(list);
+            $.mobile.changePage('#details', { transition: "slide"} );
            $('#close_details').on('tap',function(){
               $.mobile.changePage('#history', { transition: "slide", reverse: true} );
               $('#details').remove();
             });
         }else{
-          $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="list-holder">'+list+'</div></div>').insertBefore('#home');
-          $('#resultAnalyse').animate({'top':'0'},300); 
+          // $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="list-holder">'+list+'</div></div>').insertBefore('#home');
+          // $('#resultAnalyse').animate({'top':'0'},300); 
 
-          $('#close_details').on('tap',function(){
-               $('#resultAnalyse').animate({'top':'-100%'},300, function(){$(this).remove();});  
-               $('#text').val('');
-          }); 
+           var detailsPage = createDetailsPage();
+            $(detailsPage).insertAfter('#home');
+            $('.details.list-holder').append(list);
+            
+            $.mobile.changePage('#details', { transition: "slide"} );
+            
+            $('#close_details').on('tap',function(){
+              $.mobile.changePage('#home', { transition: "slide", reverse: true} );
+              $('#details').remove();
+            });
+
+          // $('#close_details').on('tap',function(){
+          //      $('#resultAnalyse').animate({'top':'-100%'},300, function(){$(this).remove();});  
+          //      $('#text').val('');
+          // }); 
         }
 
       // HIER ROEP IK GRAFIEK FUNCTIE AAN
@@ -289,20 +303,35 @@ function showAnalyzedData(response,isHistory, analyse_id) {
     }else{
       // DE ELSE IS VOOR TONEN VAN RESULTAAT VAN EEN ENKELE ZIN, DIE GEEN SENTENCE TONE HEEFT.
         if(isHistory == true){
+            var detailsPage = createDetailsPage();
+            $(detailsPage).insertAfter('#history');
             $('.details.list-holder').text(localData.text);
-
+            
+             $.mobile.changePage('#details', { transition: "slide"} );
+            
             $('#close_details').on('tap',function(){
                $.mobile.changePage('#history', { transition: "slide", reverse: true} );
                $('#details').remove();
             });
           }else{
-            $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="list-holder">'+response.text+'</div></div>').insertBefore('#home');
-            $('#resultAnalyse').animate({'top':'0'},300);  
+            var detailsPage = createDetailsPage();
+            $(detailsPage).insertAfter('#home');
+            $('.details.list-holder').text(localData.text);
+
+             $.mobile.changePage('#details', { transition: "slide"} );
 
             $('#close_details').on('tap',function(){
-               $('#resultAnalyse').animate({'top':'-100%'},300, function(){$(this).remove();});  
-               $('#text').val('');
+               $.mobile.changePage('#home', { transition: "slide", reverse: true} );
+               $('#details').remove();
             });
+
+            // $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="list-holder">'+response.text+'</div></div>').insertBefore('#home');
+            // $('#resultAnalyse').animate({'top':'0'},300);  
+
+            // $('#close_details').on('tap',function(){
+            //    $('#resultAnalyse').animate({'top':'-100%'},300, function(){$(this).remove();});  
+            //    $('#text').val('');
+            // });
         }
 
         createChart(e_category, w_category, s_category);
@@ -334,6 +363,7 @@ function createChart(e_category, w_category, s_category) {
 
     var createJSONB;
     var dataB = [];
+
     for (var i = 0; i < w_category.length; i++) {
 
       createJSONB = {};
@@ -342,9 +372,14 @@ function createChart(e_category, w_category, s_category) {
       createJSONB["highlight"] = colorsB[i];
       createJSONB["label"] = w_category[i].tone_name;
 
-       dataB.push(createJSONB); 
+       dataB.push(createJSONB);
+        console.log(i); 
+       console.log(createJSONB); 
     }
 
+    console.log(dataB[0].value);
+    console.log(dataB[0].value);
+     console.log(createJSONB.value);
 
     var createJSONC;
     var dataC = [];
@@ -363,18 +398,34 @@ function createChart(e_category, w_category, s_category) {
     var doughnutOptions = {
       legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%> - <%=segments[i].value%>%</li><%}%></ul>"
     };
- 
-    var myDoughnutChartA = new Chart(document.getElementById("graphA").getContext("2d")).Pie(dataA, doughnutOptions);
-    var myDoughnutChartB = new Chart(document.getElementById("graphB").getContext("2d")).Pie(dataB, doughnutOptions);
-    var myDoughnutChartC = new Chart(document.getElementById("graphC").getContext("2d")).Pie(dataC, doughnutOptions);
+  
+    if(dataA[0].value != 0 && dataA[1].value != 0 && dataA[2].value != 0 && dataA[3].value != 0 && dataA[4].value != 0){
+      var myDoughnutChartA = new Chart(document.getElementById("graphA").getContext("2d")).Pie(dataA, doughnutOptions);
+      var legendA = myDoughnutChartA.generateLegend();
+      $('#js-legendA').append(legendA);
+    }else{
+      $('#graphA, #js-legendA').hide();
+    }
 
-    var legendA = myDoughnutChartA.generateLegend();
-    var legendB = myDoughnutChartB.generateLegend();
-    var legendC = myDoughnutChartC.generateLegend();
+    if(dataB[0].value != 0 && dataB[1].value != 0 && dataB[2].value != 0){
+      var myDoughnutChartB = new Chart(document.getElementById("graphB").getContext("2d")).Pie(dataB, doughnutOptions);
+      var legendB = myDoughnutChartB.generateLegend();
+      $('#js-legendB').append(legendB);
+    }else{
+      $('#graphB, #js-legendB').hide();
+    }
 
-    $('#js-legendA').append(legendA);
-    $('#js-legendB').append(legendB);
-    $('#js-legendC').append(legendC);
+    if(dataC[0].value != 0 && dataC[1].value != 0 && dataC[2].value != 0 && dataC[3].value != 0 && dataC[4].value != 0){
+      var myDoughnutChartC = new Chart(document.getElementById("graphC").getContext("2d")).Pie(dataC, doughnutOptions);
+      var legendC = myDoughnutChartC.generateLegend();
+      $('#js-legendC').append(legendC);
+    }else{
+      $('#graphC, #js-legendC').hide();
+    }
+
+
+
+    
 
 }
 
@@ -528,7 +579,8 @@ function addToHistory(analyse_id){
 // MISS DAT DIT EIGENLIJK OOK DIRECT BIJ ANALYSE KON IPV DAAR GEBRUIKT TE MAKEN VAN EEN EIGEN PANEL.
 function createDetailsPage() {
   var detailsPage = '<div data-role="page" id="details"><div data-role="header"><h1>Emotional Analyzer - Details</h1><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a></div><div role="main" class="ui-content"><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="details list-holder"></div></div><div data-role="footer"><h4>Footer Text</h4></div></div>';
-  $(detailsPage).insertAfter('#history');
+  // $(detailsPage).insertAfter('#history');
+  return detailsPage;
 }
 
 // REFRESHEN VAN LIST. MAAR WORD NERGENS GEBRUIKT.
@@ -645,8 +697,8 @@ $(document).on('ready', function(){
     getSettings();
     messagePost();
     showHistory();  
-    // showAlert();
-    // sampleFile();
+    showAlert();
+    sampleFile();
 });
 
 

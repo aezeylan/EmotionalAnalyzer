@@ -210,9 +210,10 @@ form#textForm input#button_send{
 }
 
 canvas#graphA,canvas#graphB,canvas#graphC{
-    width: 25%;
-    height: 100%;
+    width: 20% !important;
+    height: 100% !important;
     float: left;
+    padding-bottom: 2%;
 }
 
 .ui-panel{
