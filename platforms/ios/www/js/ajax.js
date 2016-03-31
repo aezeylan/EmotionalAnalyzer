@@ -20,7 +20,6 @@ function messagePost() {
         success: function (response) {
            // you will get response from your php page (what you echo or print)                 
            console.log(response);
-           // getResults(response); 
            showAnalyzedData(response,false, 0);
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -193,7 +192,9 @@ function showAnalyzedData(response,isHistory, analyse_id) {
       // saveAnalyse(response);
       analyzeType = response;
     }
-      
+      console.log(isHistory); 
+    console.log(analyzeType); 
+    var detailsPage = createDetailsPage();
     var list = '<ul data-role="listview" id="list">';
 
     var e_tone;
@@ -267,8 +268,7 @@ function showAnalyzedData(response,isHistory, analyse_id) {
 
       // HIER CONTROLEER IK OF HET GESCHIEDENIS DETAILS IS OF DIRECTE ANALYSE.
         if(isHistory == true){
-
-          var detailsPage = createDetailsPage();
+          alert('A');
           $(detailsPage).insertAfter('#history');
            $('.details.list-holder').append(list);
             $.mobile.changePage('#details', { transition: "slide"} );
@@ -279,13 +279,10 @@ function showAnalyzedData(response,isHistory, analyse_id) {
         }else{
           // $('<div id="resultAnalyse" class="panel"><div class="resultAnalyse-header"><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a><h2>Analyse</h2></div><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="list-holder">'+list+'</div></div>').insertBefore('#home');
           // $('#resultAnalyse').animate({'top':'0'},300); 
-
-           var detailsPage = createDetailsPage();
+           alert('B');
             $(detailsPage).insertAfter('#home');
             $('.details.list-holder').append(list);
-            
             $.mobile.changePage('#details', { transition: "slide"} );
-            
             $('#close_details').on('tap',function(){
               $.mobile.changePage('#home', { transition: "slide", reverse: true} );
               $('#details').remove();
@@ -303,23 +300,19 @@ function showAnalyzedData(response,isHistory, analyse_id) {
     }else{
       // DE ELSE IS VOOR TONEN VAN RESULTAAT VAN EEN ENKELE ZIN, DIE GEEN SENTENCE TONE HEEFT.
         if(isHistory == true){
-            var detailsPage = createDetailsPage();
+             alert('C');
             $(detailsPage).insertAfter('#history');
             $('.details.list-holder').text(localData.text);
-            
              $.mobile.changePage('#details', { transition: "slide"} );
-            
             $('#close_details').on('tap',function(){
                $.mobile.changePage('#history', { transition: "slide", reverse: true} );
                $('#details').remove();
             });
           }else{
-            var detailsPage = createDetailsPage();
+             alert('D');
             $(detailsPage).insertAfter('#home');
             $('.details.list-holder').text(localData.text);
-
              $.mobile.changePage('#details', { transition: "slide"} );
-
             $('#close_details').on('tap',function(){
                $.mobile.changePage('#home', { transition: "slide", reverse: true} );
                $('#details').remove();
@@ -429,7 +422,14 @@ function saveAnalyse(data) {
     window.localStorage.setItem(data._id, dataAnalyse);
     // addToHistory(data._id);
     addToArray(data._id);
-    // showAlert();
+    
+    navigator.notification.alert(
+      'Analyse is saved.',  // message
+        'callback',         // callback
+        'Analyse',            // title
+        'Close.'                  // buttonName
+    );
+
 }
 
 // DIT IS DE ENDLESS SCROLL VOOR DE HISTORY LIST
@@ -538,13 +538,13 @@ function showHistory() {
   }
 
 // DE LISTITEM AHREF OM DETAILS PAGINA TE TONEN.
-  $('.show-details').on('tap' ,function(analyse_id){ 
-    analyse_id = $(this).children('.analyse_id').attr('id');
-    createDetailsPage();
-    alert('demo');
-    $.mobile.changePage('#details', { transition: "slide"} );
-    // showHistoryDetails(analyse_id);
+  $('.show-details').on('click' ,function(e){ 
+    e.preventDefault();
+    console.log($(this));
+    var analyse_id = $(this).children('.analyse_id').attr('id');
     showAnalyzedData(0,true, analyse_id);
+    alert('error');
+    return false;
   });
 }
 
@@ -571,7 +571,22 @@ function addToHistory(analyse_id){
 // HET AANMAKEN VAN EEN DETAILS PAGE
 // MISS DAT DIT EIGENLIJK OOK DIRECT BIJ ANALYSE KON IPV DAAR GEBRUIKT TE MAKEN VAN EEN EIGEN PANEL.
 function createDetailsPage() {
-  var detailsPage = '<div data-role="page" id="details"><div data-role="header"><h1>Emotional Analyzer - Details</h1><a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a></div><div role="main" class="ui-content"><div class="graph-holder"><canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div><canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div><canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div></div><div class="details list-holder"></div></div><div data-role="footer"><h4>Footer Text</h4></div></div>';
+  var detailsPage = 
+  '<div data-role="page" id="details">'+
+    '<div data-role="header">'+
+        '<h1>Emotional Analyzer - Details</h1>'+
+        '<a href="#" id="close_details" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close</a>'+
+    '</div>'+
+    '<div role="main" class="ui-content">'+
+        '<div class="graph-holder">'+
+          '<canvas id="graphA"></canvas><div id="js-legendA" class="chart-legend"></div>'+
+          '<canvas id="graphB"></canvas><div id="js-legendB" class="chart-legend"></div>'+
+          '<canvas id="graphC"></canvas><div id="js-legendC" class="chart-legend"></div>'+
+        '</div>'+
+        '<div class="details list-holder"></div>'+
+    '</div>'+
+  '<div data-role="footer"><h4>Footer Text</h4></div>'+
+  '</div>';
   // $(detailsPage).insertAfter('#history');
   return detailsPage;
 }
@@ -613,17 +628,6 @@ function activePage() {
 }
 
 
-
-// NATIVE FUNCTIE NOTIFICATION.
-function showAlert() {
-  navigator.notification.alert(
-    'You\'re analyze is saved in history.',  // message
-    'Een callback',         // callback
-    'Analyze is saved',            // title
-    'Analyze saved'                  // buttonName
-  );
-}
-
 // NATIVE FUNCTIE SAMPLEFILE ONCLICK.
 function sampleFile() {
   $('#button_sample').on('tap',function(event){
@@ -632,56 +636,21 @@ function sampleFile() {
   });
 }
 
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    console.log(navigator.notification);
+}
 
 // DEFAULT GEGEVENS VAN FILE NATIVE PHONEGAP.
  // Wait for PhoneGap to load
-    //
-    function onLoad() {
-        document.addEventListener("deviceready", onDeviceReady, false);
-    }
 
-    // PhoneGap is ready
-    //
-    function onDeviceReady() {
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
-    }
 
-    function gotFS(fileSystem) {
-        fileSystem.root.getFile("../demo.txt", null, gotFileEntry, fail);
-    }
-
-    function gotFileEntry(fileEntry) {
-        fileEntry.file(gotFile, fail);
-    }
-
-    function gotFile(file){
-        readDataUrl(file);
-        readAsText(file);
-    }
-
-    function readDataUrl(file) {
-        var reader = new FileReader();
-        reader.onloadend = function(evt) {
-            console.log("Read as data URL");
-            console.log(evt.target.result);
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function readAsText(file) {
-        var reader = new FileReader();
-        reader.onloadend = function(evt) {
-            console.log("Read as text");
-            console.log(evt.target.result);
-            alert(evt.target.result);
-        };
-        reader.readAsText(file);
-    }
-
-    function fail(evt) {
-        console.log(evt.target.error.code);
-    }
-
+document.addEventListener("deviceready", onDeviceReady, false);
+// document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    console.log(cordova.file);
+    StatusBar.hide();
+}
 
 // DOCUMENT ON READY. OP HET EINDE GA IK ALLES VERANDEREN NAAR JQUERY MOBILE EVENTS, PAGEINIT ETC.
 $(document).on('ready', function(){
@@ -690,7 +659,6 @@ $(document).on('ready', function(){
     getSettings();
     messagePost();
     showHistory();  
-    // showAlert();
     sampleFile();
 });
 

@@ -13,6 +13,9 @@
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="Notification">
+        <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
+    </feature>
     <allow-intent href="market:*" />
     <name>EmotionalAnalyzer</name>
     <description>Hello World sample application that responds to the deviceready event.</description>
